@@ -1,0 +1,71 @@
+import time
+
+from selenium import webdriver
+from selenium.webdriver import ActionChains
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
+
+service_obj = Service("C://Users//vishw//OneDrive//Desktop//chromedriver.exe")
+driver = webdriver.Chrome(service=service_obj)
+
+#Task1- Navigate to the fitpeo himepage
+
+driver.get("https://www.fitpeo.com/")
+driver.maximize_window()
+driver.implicitly_wait(5)
+time.sleep(3)
+
+#Task2 - Navigate to the Revenue calculator page
+
+driver.find_element(By.XPATH,"//a[@href='/revenue-calculator']").click()
+time.sleep(5)
+
+#Task3 - Scroll down to the slider ection
+
+driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
+
+#Task4 - Adjust the slider to the value 823
+
+slider = driver.find_element(By.XPATH,"/html/body/div[2]/div[1]/div[1]/div[2]/div/div/span[1]/span[3]/input")
+action = ActionChains(driver)
+ActionChains(driver).drag_and_drop_by_offset(slider,94, 0).perform()
+time.sleep(5)
+
+#Task5 - update text field to the value 1000
+
+text_field = slider
+text_field.clear()
+text_field.send_keys("1000")
+time.sleep(5)
+
+#Task6 - Validate the slider value
+
+text_field_value = text_field.get_attribute("value")
+expected_value1 = "1000"
+if text_field_value == expected_value1:
+    print("the slider value is : ", expected_value1)
+else:
+    print("slider value is wrong")
+
+
+#Task7 - select CPT codes
+
+driver.find_element(By.XPATH,"//input[@type='checkbox']").click()
+driver.find_element(By.XPATH,"/html/body/div[2]/div[1]/div[2]/div[2]/label/span[1]/input").click()
+driver.find_element(By.XPATH,"/html/body/div[2]/div[1]/div[2]/div[3]/label/span[1]/input").click()
+driver.find_element(By.XPATH,"/html/body/div[2]/div[1]/div[2]/div[8]/label/span[1]/input").click()
+time.sleep(5)
+
+
+#Task9 - verify the header displaying
+
+header = driver.find_element(By.XPATH,"/html/body/div[2]/div[1]/header/div/p[4]/p")
+header_value = header.text
+expected_value = "$135000"
+if header_value == expected_value:
+    print("Total Recurring Reimbursement for all Patients per month : ", expected_value)
+else:
+    print("calculation wrong")
+time.sleep(5)
+
